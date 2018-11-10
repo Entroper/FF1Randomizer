@@ -262,7 +262,13 @@
 						<EnumDropDown TItem="MusicShuffle" bind-Value="@MyFlags.Music"></EnumDropDown>
 						<CheckBox Id="disableDamageTileFlickerCheckBox" bind-Value="@MyFlags.DisableDamageTileFlicker">Disable Damage Tile Flicker</CheckBox>
 					</div>
-					<button>lol save preferences</button>
+					<div class="col-12">
+						<button onclick="@SavePreferences">Save Preferences</button>
+						<button onclick="@LoadPreferences">Load Preferences</button>
+					</div>
+					<div class="col-12">
+						<p id="funKeyMessage"></p>
+					</div>
 				</div>
 			</div>
 		</TabPane>
@@ -282,6 +288,16 @@
 	{
 		activeTab = tab;
 		StateHasChanged();
+	}
+
+	public void SavePreferences()
+	{
+		JSRuntime.Current.InvokeAsync<string>("savePreferences", MyFlags.Flags);
+	}
+
+	public void LoadPreferences()
+	{
+		MyFlags.Flags = JSRuntime.Current.InvokeAsync<Flags>("loadPreferences").Result;
 	}
 
 	protected override void OnInit()
